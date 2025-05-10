@@ -1,0 +1,28 @@
+services:
+ 
+  selenium:
+    image: selenium/standalone-chrome:115.0
+    ports:
+      - "4444:4444"
+    shm_size: 1gb
+
+ 
+  selenium-test:
+    build: .
+    depends_on:
+      - selenium
+   
+    links:
+      - selenium
+    shm_size: 1gb
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - DISPLAY=:99
+      - WEBDRIVER_REMOTE_URL=http://selenium:4444/wd/hub
+      - TEST_USER=luoluoluo
+      - TEST_PASS=lcy123
+    stdin_open: true  
+    tty: true
+    command: ["bash"]
